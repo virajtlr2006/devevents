@@ -1,28 +1,45 @@
-'use client'
+import EventCard from "@/components/EventCard"
+import ExploreBtn from "@/components/ExploreBtn"
+import { IEvent } from "@/database";
+import { getAllEvents } from '@/lib/actions/event.actions';
+// Sample events data
 
-import EventCard from '@/components/EventCard'
-import ExploreBtn from '@/components/ExploreBtn'
-import { events } from '@/lib/constants'
-import { title } from 'process'
+const page =  async () => {
 
-const page = () => {
+  // Fetch events directly from the database via server-side helper to
+  // avoid making HTTP requests during prerender.
+  const events: IEvent[] = await getAllEvents();
+
+
+
+// /api/events/next-js-conf-2026 INC++ seo
+
   return (
     <section>
-     <h1 className='text-center'>The Hub for Every Dev <br/>Event You Can't Miss</h1>
-     <p className='text-center mt-5'>Hackathons, Meetups, and Conferences, All in one Place</p>
+      <h1 className="text-center">The Hub For Every Dev <br /> Event You Can't Miss</h1>
+      <p className="text-center mt-5">Hackathons, Meetups, and Conferences</p>
+      <ExploreBtn/>
+      <div className='mt-20'>
+        <h3>Featured Events</h3>
+      </div>
 
-     <ExploreBtn/>
+      <ul className="events mt-16">
+    
+    
 
-     <div className='mt-20 space-y-7'>
-      <h3>Featured Events</h3>
-      <ul className='events'>
-        {events.map((events)=>(
-          <li key={events.title}>
-            <EventCard {...events}/>
-          </li>
-        ))}
-      </ul>
-     </div>
+      {/* // Here we have used parantheses to directly return the JSX element from the arrow function
+      // If we used curly braces, we would need to use a return statement inside the function body
+      // This is a concise way to map over an array and render elements */}
+
+    {  events.map((event: IEvent) => (
+        // <li key={event}>Event {event}</li> //before
+        <li key={event.title}>
+          <EventCard {...event} />
+        </li>
+      ))
+    }
+   </ul>
+   
     </section>
   )
 }
